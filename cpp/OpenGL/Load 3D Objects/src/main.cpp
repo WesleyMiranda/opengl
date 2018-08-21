@@ -31,6 +31,85 @@ struct Coord3d {
 };
 
 
+struct Face {
+	int facenum;
+	bool quad; // topologia eh Quad ou Triângulo?
+	int vertices[4];
+	Face(int num, int f1, int f2, int f3)
+	{
+		facenum = num;
+		vertices[0] = f1;
+		vertices[1] = f2;
+		vertices[2] = f3;
+		quad = false;// é um triângulo
+	}
+	Face(int num, int f1, int f2, int f3, int f4)
+	{
+		facenum = num;
+		vertices[0] = f1;
+		vertices[1] = f2;
+		vertices[2] = f3;
+		vertices[3] = f4;
+		quad = true;// é um quadrado
+	}
+
+};
+
+
+Coord3d getVertex(string s)
+{
+	stringstream saved;
+	saved << s;
+	char c;
+	float x, y, z;
+	saved >> c >> x >> y >> z;
+	Coord3d tmp = Coord3d(x, y, z);
+	return tmp;
+}
+
+Coord3d getNormal(string s)
+{
+	stringstream saved;
+	saved << s;
+	string c;
+	float x, y, z;
+	saved >> c >> x >> y >> z;
+	Coord3d tmp = Coord3d(x, y, z);
+	return tmp;
+}
+
+
+Face getFace(string s, bool isQuad)
+{
+	int a, b, c, d;
+	int n;
+
+	if (isQuad)
+	{
+		Face f = Face(0, 0, 0, 0, 0);
+		sscanf_s(s.c_str(), "f %d//%d %d//%d %d//%d %d//%d", &a, &n, &b, &n, &c, &n, &d, &n);
+		f.quad = true;
+		f.facenum = n;
+		f.vertices[0] = a;
+		f.vertices[1] = b;
+		f.vertices[2] = c;
+		f.vertices[3] = d;
+		return f;
+	}
+	else
+	{
+		Face f = Face(0, 0, 0, 0);
+		sscanf_s(s.c_str(), "f %d//%d %d//%d %d//%d", &a, &n, &b, &n, &c, &n);
+		f.quad = false;
+		f.facenum = n;
+		f.vertices[0] = a;
+		f.vertices[1] = b;
+		f.vertices[2] = c;
+		return f;
+	}
+
+
+}
 
 
 
