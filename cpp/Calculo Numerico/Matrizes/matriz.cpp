@@ -29,4 +29,31 @@ void criarMatriz(string s, Matriz* M)
 	cout<<endl;
 }
 
+void imprimeMatriz(string s, Matriz M)
+{
+	cout << s << endl;
+	for (int i = 0; i < M.linha; i++)
+	{
+		for (int j = 0; j < M.coluna; j++)
+		{
+			cout << setw(5) << M.valor[i][j] << " ";
+		}
+		cout << endl;
+	}
+	cout << endl;
+
+}
+
+Matriz transpostaMatriz(Matriz M)
+{
+	Matriz temp;
+
+	temp.linha = M.coluna;
+	temp.coluna = M.linha;
+	for (int i = 0; i < temp.linha; i++)
+		for (int j = 0; j < temp.coluna; j++)
+			temp.valor[i][j] = M.valor[j][i];
+
+	return temp;
+}
 
