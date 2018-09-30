@@ -57,3 +57,51 @@ Matriz transpostaMatriz(Matriz M)
 	return temp;
 }
 
+
+Matriz somaMatriz(Matriz M, Matriz N)
+{
+	Matriz temp;
+
+
+	temp.linha = M.linha;
+	temp.coluna = M.coluna;
+	if (M.linha == N.linha && M.coluna == N.coluna)
+	{
+		for (int i = 0; i < M.linha; i++)
+			for (int j = 0; j < M.coluna; j++)
+				temp.valor[i][j] = M.valor[i][j] + N.valor[i][j];
+	}
+	else
+	{
+		cout << "Erro!!! A soma deve ser realizada com matrizes de mesma dimensao!!\n";
+		exit(EXIT_FAILURE);
+
+	}
+	return temp;
+
+}
+
+void trocarLinhas(int i, int j, Matriz* M)
+{
+	double t;
+	for (int k = 0; k < M->coluna; k++)
+	{
+		t = M->valor[i][k];
+		M->valor[i][k] = M->valor[j][k];
+		M->valor[j][k] = t;
+	}
+}
+
+bool saoIguais(double a, double b)
+{
+
+	double precisao = 1.0e-8;
+	return abs(a - b) < precisao;
+
+}
+
+void divideMatriz(int l, double num, Matriz& M)
+{
+	for (int j = 0; j < M.coluna; j++)
+		M.valor[l][j] /= num;
+}
