@@ -165,3 +165,62 @@ Matriz criarIdentidade(int x) {
 	return Temp;
 }
 
+Matriz Merge(Matriz M, Matriz N) {
+
+	if (N.linha == M.linha) {
+		Matriz Temp;
+		Temp.linha = M.linha;
+		Temp.coluna = M.coluna + N.coluna;
+
+		//Bloco1
+		for (int i = 0; i < M.linha; i++)
+			for (int j = 0; j < M.coluna; j++)
+				Temp.valor[i][j] = M.valor[i][j];
+
+		//Bloco2
+		for (int i = 0; i < N.linha; i++)
+			for (int j = 0; j < N.linha; j++)
+				Temp.valor[i][M.coluna + j] = N.valor[i][j];
+
+		return Temp;
+	}
+
+	else
+	{
+		cout << "ERRO! Não eh possivel mesclar matrizes com quantidade  de linhas diferentes\n";
+		system("pause");
+		exit(EXIT_FAILURE);
+	}
+}
+
+void SplitMatriz(Matriz M, int d1, int d2, int dd1, int dd2, Matriz* A, Matriz* B) {
+
+	A->linha = d1;
+	A->coluna = d2;
+	B->linha = dd1;
+	B->coluna = dd2;
+
+	//Bloco1
+	for (int i = 0; i < d1; i++)
+		for (int j = 0; j < d2; j++)
+			A->valor[i][j] = M.valor[i][j];
+
+	//Bloco2
+	for (int i = 0; i < dd1; i++)
+		for (int j = 0; j < dd2; j++)
+			B->valor[i][j] = M.valor[i][j + d2];
+}
+
+bool ehIdentidade(Matriz M) {
+	for (int i = 0; i < M.linha; i++) {
+		for (int j = 0; j < M.coluna; j++) {
+			if ((i == j) && !saoIguais(M.valor[i][j], 1.0))
+				return false;
+
+			if ((i != j) && !saoIguais(M.valor[i][j], 0.0))
+				return false;
+
+		}
+	}
+	return true;
+}
