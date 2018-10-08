@@ -224,3 +224,32 @@ bool ehIdentidade(Matriz M) {
 	}
 	return true;
 }
+
+
+
+Matriz inversaMatriz(Matriz M) {
+	if (M.coluna == M.linha) {
+
+		int aux = M.linha, pivo = 0;
+		Matriz I = criarIdentidade(aux);
+		Matriz P = Merge(M, I);
+		Matriz EP = rref(P);
+		Matriz A, B;
+		SplitMatriz(EP, aux, aux, aux, aux, &A, &B);
+
+		if (ehIdentidade(A))
+			return B;
+		else
+		{
+			cout << "ERRO! Esta Matriz nao eh inversivel\n";
+			system("pause");
+			exit(EXIT_FAILURE);
+		}
+	}
+
+	else {
+		cout << "Esta Matriz nao eh inversivel\n";
+		system("pause");
+		exit(EXIT_FAILURE);
+	}
+}
