@@ -25,3 +25,38 @@ float Lagrange(float x,Pontos P)
 	return soma;
 }
 
+void lagrangePlot(Pontos P,double xmin_, double xmax_,MyRGB cor, int n)
+{
+	int nSubIntervalos=n-1;
+	double x=xmin_;
+	double y=Lagrange(x,P);
+	
+	double incr=(xmax_-xmin_)/nSubIntervalos;
+	
+	glColor3f(cor.R,cor.G,cor.B);
+	glBegin(GL_LINE_STRIP);		
+	for(int i=1; i<=n; i++)
+		{
+			glVertex2f(x,y);
+			x+=incr;
+			y=Lagrange(x,P);			
+		}				
+	glEnd();
+}
+
+
+
+void lagrangeInterpola(Pontos P)
+{
+	float xmin=P[0].x;
+	float xmax=P[P.size()-1].x;
+	
+	glLineStipple(1, 0xAAAA);
+	glEnable(GL_LINE_STIPPLE);  
+	MyRGB corLagrange(0,0.0,0.2);
+	glLineWidth(2.0);
+	lagrangePlot(P,xmin, xmax,corLagrange,150);
+	glDisable(GL_LINE_STIPPLE);
+	
+}
+	
