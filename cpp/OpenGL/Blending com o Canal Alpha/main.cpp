@@ -76,3 +76,27 @@ static void teclado(unsigned char key, int x, int y)
     glutPostRedisplay();
 }
 
+static void idle(int)
+{
+    if(fonte)
+    {
+        Bola b(xc,yc);
+        bolas.push_back(b);
+    }
+    glutTimerFunc(1000/FPS,idle,0);
+    glutPostRedisplay();
+
+}
+
+
+void mouse(int botao, int status, int x, int y)
+{
+    xc=(float)x;
+    yc=ALTURA-y;
+    if(botao==GLUT_LEFT_BUTTON)
+        if(status==GLUT_DOWN)
+        {
+            fonte=true;
+        }
+    glutPostRedisplay();
+}
