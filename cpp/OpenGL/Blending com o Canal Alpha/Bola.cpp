@@ -45,3 +45,45 @@ Bola::Bola(float x, float y)
 	veloc=Vetor(aleatorio(-0.5,0.5),aleatorio(2,2.5));
 }
 
+Bola::Bola(float x, float y, float r, float cor[4])
+{
+	set_x(x);
+	set_y(y);
+	m_raio=r;
+    set_cor(cor);
+}
+
+Bola::~Bola()
+{
+
+}
+
+float Bola::get_raio()
+{
+    return m_raio;
+}
+
+float Bola::get_x()
+{
+    return m_x;
+}
+
+float Bola::get_y()
+{
+    return m_y;
+}
+
+void Bola::set_x(float x)
+{
+    m_x=x;
+}
+
+void Bola::set_y(float y)
+{
+    m_y=y;
+}
+
+void Bola::set_raio(float r)
+{
+    m_raio=r;
+}
