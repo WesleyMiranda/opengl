@@ -87,3 +87,36 @@ void Bola::set_raio(float r)
 {
     m_raio=r;
 }
+
+void Bola::set_cor(float cor[4])
+{
+    m_cor[0]=cor[0];
+    m_cor[1]=cor[1];
+    m_cor[2]=cor[2];
+    m_cor[3]=cor[3];
+}
+
+void Bola::show()
+{
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+
+    glColor4fv(m_cor);
+	glBegin(GL_POLYGON);
+		for(float theta=0;theta<2*PI;theta+=0.1)
+		{
+			float x=m_x+m_raio*cos(theta);
+			float y=m_y+m_raio*sin(theta);
+			glVertex2f(x,y);
+		}
+	glEnd();
+	glDisable(GL_BLEND);
+}
+
+float Bola::aleatorio(float a, float b)
+{
+    float n=((float)rand())/(float)RAND_MAX;
+    float amplitude=b-a;
+    float result=n*amplitude+a;
+    return result;
+}
