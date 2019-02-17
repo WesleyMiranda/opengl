@@ -120,3 +120,15 @@ float Bola::aleatorio(float a, float b)
     float result=n*amplitude+a;
     return result;
 }
+void Bola::update()
+{
+    m_x+=veloc.x;
+    m_y+=veloc.y;
+    m_cor[3]-=0.005;
+}
+bool Bola::continua()
+{
+    if(m_cor[3]<0)
+       destroi=true;
+    return destroi;
+}
