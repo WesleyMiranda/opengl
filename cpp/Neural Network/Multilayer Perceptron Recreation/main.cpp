@@ -190,6 +190,13 @@ void desenha()
 	glColor3f(0, 0, 0);
 	drawFunc(xmin, xmax, 0.5, 0); //Desenho da reta esperada em PRETO
 
+	//perceptron();
+
+	float a = -(W[0] / W[1]);
+	glColor3f(0, 1, 0);
+	glLineWidth(3);
+	drawFunc(xmin, xmax, a, 0); //Desenho da reta gerada pelo Perceptron em VERDE
+
 	glCallList(l);
 
 	glutSwapBuffers();
