@@ -1,82 +1,176 @@
-#include<GL\freeglut.h>
-#include<vector>
+#include <GL\freeglut.h>
+#include<iostream>
+#include <vector>
+
 using namespace std;
 
-struct Data
-{
-	int x;
-	int y;
+
+float xmin = -80;
+float xmax = 80;
+float ymin = -60;
+float ymax = 60;
+float c = 5;
+int l, totalDatas = 100;
+const int DIMENSION = 2;
+vector<float> W;
+vector<bool> hypothesis;
+
+struct Data {
+	vector<float> X;
 	bool h;
-	Data(int x_,int y_,bool h_) 
+	Data(float x_, float y_, bool h_)
 	{
-		x = x_;
-		y = y_;
+		X.clear();
+		X.push_back(x_);
+		X.push_back(y_);
 		h = h_;
 	}
 };
 
-int LARGURA = 800, ALTURA = 600, ndados = 100;
-double xmax = 5, ymax = 4;
-int l;
-typedef vector<Data> Amostra;
-Amostra AM;
-
-int func(int x)
+struct Classification
 {
-	return (int)(x / 2);
-}
-
-void drawFunc(int r)
-{
-	glColor3f(0, 1, 0);
-	glBegin(GL_LINES);
-	glVertex2f(0, 0);
-	glVertex2f(0.1, 0.6);
-	glEnd();
-}
-
-void draw()
-{
-	glClear(GL_COLOR_BUFFER_BIT);
-	glLoadIdentity();
-
-	drawFunc(xmax);
-
-	glPointSize(4);
-	glColor3f(0, 0, 0);
-	glBegin(GL_POINTS);
-	glVertex2d(5,2);
-	glEnd();
-
-	glutSwapBuffers();
-}
-
-int lista(Amostra &Vec)
-{
-	for (int i = 0; i < ndados; i++)
+	int pos;
+	bool b;
+	Classification(int pos_, bool b_)
 	{
-		int x, y;
-		bool h;
+		pos = pos_;
+		b = b_;
+	}
+};
 
-		x = rand() % 160 - 80;
-		y = rand() % 120 - 60;
-		h = ((y - func(x)) > 0) ? true : false;
+typedef vector<Data>Space;
+typedef vector<Classification>Misclassified;
 
-		Data A(x, y, h);
-		Vec.push_back(A);
+Misclassified misclassified_examples;
+Space A;
 
+vector<float> vectorSum(vector<float>& A, vector<float>& B)
+{
+	vector<float> Sum;
+	for (unsigned int i = 0; i < A.size(); i++)
+	{
+		float C = A[i] + B[i];
+		Sum.push_back(C);
+	}
+	return Sum;
+}
+
+void scalarMultiplication(int x, vector<float>& A)
+{
+	for (unsigned int i = 0; i < A.size(); i++)
+	{
+		A[i] *= x;
+	}
+}
+
+float dotProduct(vector<float>& W, vector<float>& X)
+{
+	float scalar = 0;
+	for (unsigned int i = 0; i < W.size(); i++)
+	{
+		scalar += W[i] * X[i];
+	}
+	return scalar;
+}
+
+float f(float x)
+{
+	return c + x / 2;
+}
+
+void drawFunc(float xmin, float xmax, float a, float b)
+{
+	float ymin = a * xmin + b;
+	float ymax = a * xmax + b;
+	glBegin(GL_LINES);
+	glVertex2f(xmin, ymin);
+	glVertex2f(xmax, ymax);
+	glEnd();
+}
+
+void Eixo(float x1, float y1, float x2, float y2)
+{
+	glColor3f(0, 0, 0);
+	glLineWidth(2.0);
+	glBegin(GL_LINES);
+	glVertex2f(x1, y1);
+	glVertex2f(x2, y2);
+	glEnd();
+
+}
+
+void esc(unsigned char tecla, int x, int y)
+{
+	switch (tecla)
+	{
+	case 27:
+		exit(0);
+	}
+}
+
+void list(Space& Vec)
+{
+
+	for (int i = 0; i < totalDatas; i++)
+	{
+		int x = rand() % 160 - 80;
+		int y = rand() % 120 - 60;
+		bool h = ((y - (int)f(x)) > 0) ? true : false;
+
+		Data D((float)x, (float)y, h);
+		Vec.push_back(D);
 	}
 
-	int num = glGenLists(1);
-	glNewList(num, GL_COMPILE);
-	for (int i = 0; i < ndados; i++)
+	l = glGenLists(1);
+	glNewList(l, GL_COMPILE);
+
+	for (unsigned int i = 0; i < Vec.size(); i++)
 	{
+
+		if (Vec[i].h)
+			glColor3f(1, 0, 0);
+		else
+			glColor3f(0, 0, 1);
+		glPointSize(3);
 		glBegin(GL_POINTS);
-		glVertex2d(Vec[i].x, Vec[i].y);
+		glVertex2f(Vec[i].X[0], Vec[i].X[1]);
 		glEnd();
 	}
 	glEndList();
-	return num;
+}
+
+
+
+void random(vector<float>& W)
+{
+	for (int i = 0; i < DIMENSION; i++)
+	{
+		int x = rand() % 9 + 1;
+		W.push_back((float)x);
+	}
+}
+
+
+void desenha()
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	Eixo(xmin, 0, xmax, 0); //Eixo X desenhado em Preto
+	Eixo(0, ymin, 0, ymax); //Eixo Y desenhado em Preto
+
+	glColor3f(0, 0, 0);
+	drawFunc(xmin, xmax, 0.5, 0); //Desenho da reta esperada em PRETO
+
+	//perceptron();
+
+	float a = -(W[0] / W[1]);
+	glColor3f(0, 1, 0);
+	glLineWidth(3);
+	drawFunc(xmin, xmax, a, 0); //Desenho da reta gerada pelo Perceptron em VERDE
+
+	glCallList(l);
+
+	glutSwapBuffers();
 }
 
 int main(int argc, char* argv[])
@@ -89,9 +183,12 @@ int main(int argc, char* argv[])
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluOrtho2D(-2, xmax, 0, ymax);
+	gluOrtho2D(xmin, xmax, ymin, ymax);
 
-	glutDisplayFunc(draw);
+	list(A);
+
+	glutDisplayFunc(desenha);
+	glutKeyboardFunc(esc);
 	glutMainLoop();
 
 	return 0;
