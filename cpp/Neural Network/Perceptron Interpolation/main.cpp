@@ -84,33 +84,3 @@ void init()
 }
 
 
-void display()
-{
-    glClearColor(1, 1, 1, 1);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    float cor[]={0,1,1};
-    cg::Line(xmin,0,xmax,0,cor,3.0);
-    cg::Line(0,ymin,0,ymax,cor,3.0);
-
-    float corFunc[]={1,0,0};
-
-    float colorPoints[]={0.3,0.5,1.0};
-
-    cg::PlotPoints(data,colorPoints);
-
-   float PerceptronColor[]={0,0,0};
-   neuron.plot(xmin,xmax,PerceptronColor);
-   neuron.print();
-
-
-    glutSwapBuffers();
-}
-
-void idle(int x)
-{
-    neuron.training(data);
-   	glutPostRedisplay();
-	glutTimerFunc(1000/FPS,idle,0);
-}
-
