@@ -150,6 +150,22 @@ void random(vector<float>& W)
 	}
 }
 
+void predict()
+{
+	misclassified_examples.clear();
+	float u;
+	for (int i = 0; i < totalDatas; i++)
+	{
+		u = dotProduct(A[i].X, W);
+		bool b = (u >= 0) ? true : false;
+		if (A[i].h != b)
+		{
+			Classification C(i, b);
+			misclassified_examples.push_back(C);
+		}
+	}
+}
+
 
 void desenha()
 {
