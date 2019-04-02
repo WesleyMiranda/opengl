@@ -54,6 +54,22 @@ void cg::PlotFunction(Function f, double xmin_, double xmax_,float cor[3],float 
 	glEnd();
 }
 
+void cg::ExtractPoints(Function f, int numOfPts, Knots& P, double xmin_, double xmax_)
+{
+	int nSubIntervalos=numOfPts-1;
+	double x=xmin_;
+	double y=f(x);
+	double incr=(xmax_-xmin_)/nSubIntervalos;
+	P.clear();
+	for(int i=0; i<numOfPts; i++)
+	{
+		Point p(x,y);
+		P.push_back(p);
+		x+=incr;
+		y=f(x);
+	}
+
+}
 
 void cg::PlotPoints(Knots P, float cor[3])
 {
