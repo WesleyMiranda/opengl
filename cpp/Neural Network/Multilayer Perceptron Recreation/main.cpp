@@ -139,8 +139,6 @@ void list(Space& Vec)
 	glEndList();
 }
 
-
-
 void random(vector<float>& W)
 {
 	for (int i = 0; i < DIMENSION; i++)
@@ -166,6 +164,21 @@ void predict()
 	}
 }
 
+vector<float> perceptron()
+{
+	random(W);
+	predict();
+
+	while (0 != misclassified_examples.size())
+	{
+		int i = rand() % misclassified_examples.size();
+		int j = (misclassified_examples[i].b) ? 1 : -1;
+		scalarMultiplication(j, W);
+		W = vectorSum(W, A[i].X);
+		predict();
+	}
+	return W;
+}
 
 void desenha()
 {
