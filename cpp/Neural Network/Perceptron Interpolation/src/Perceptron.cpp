@@ -110,4 +110,36 @@ void Perceptron::training(Knots data)
 
 }
 
+void Perceptron::plot(double xmin_, double xmax_,float cor[3])
+{
+    unsigned int totalpts=200;
+    int nSubIntervalos=totalpts-1;
+    double x=xmin_;
+	double y=curve(x);
+    double incr=(xmax_-xmin_)/nSubIntervalos;
+
+	glLineWidth(2.5);
+	glLineStipple(1, 0xAAAA);
+	glEnable(GL_LINE_STIPPLE);
+	glColor3fv(cor);
+	glBegin(GL_LINE_STRIP);
+    for(unsigned i=1; i<=totalpts; i++)
+    {
+			glVertex2f(x,y);
+			x+=incr;
+			y=curve(x);
+	}
+	glEnd();
+    glDisable(GL_LINE_STIPPLE);
+
+}
+
+double Perceptron::curve(double x)
+{
+    double result=0.0;
+    for(unsigned i=0;i<weights.size();i++)
+        result+=weights[i]*pow(x,i);
+    //return weights[0]+x*weights[1]+pow(x,2)*weights[2]+pow(x,3)*weights[3]+pow(x,4)*weights[4]+pow(x,5)*weights[5];
+    return result;
+}
 
