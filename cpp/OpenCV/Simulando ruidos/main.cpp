@@ -20,6 +20,20 @@ void submat(Mat image)
 	cout << subMat << endl;
 }
 
+void gauss()
+{
+	Mat noise = img.clone();
+	randn(noise, 100, 30);
+
+	addWeighted(img, 1, noise, 1, 0, result_gauss);
+
+	cout << "--- Ruido Gaussiano---" << endl;
+	submat(noise);
+	cout << "--- Resultado---" << endl;
+	submat(result_gauss);
+
+}
+
 
 int main()
 {
