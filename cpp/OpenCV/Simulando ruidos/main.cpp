@@ -34,6 +34,24 @@ void gauss()
 
 }
 
+void salt_pepper()
+{
+	Mat noise = Mat::zeros(img.rows, img.cols, CV_8U);
+	randu(noise, 0, 255);
+
+	Mat pimenta = noise < 3;
+	Mat  sal= noise > 250;
+
+	result_salt_pepper = img.clone();
+	result_salt_pepper.setTo(255, sal);
+	result_salt_pepper.setTo(0, pimenta); 
+	
+	cout << "--- Ruido Sal e Pimenta---" << endl;
+	submat(noise);
+	cout << "--- Resultado---" << endl;
+	submat(result_salt_pepper);
+
+}
 
 int main()
 {
