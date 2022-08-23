@@ -1,5 +1,5 @@
-![imagem de desenvolvedor](https://github.com/wesleymiranda/oficina/blob/master/software%20developer.jpg)
-#OFICINA
+![imagem de desenvolvedor](https://github.com/wesleymiranda/oficina/blob/master/software%20developer.jpg)  
+# OFICINA
   
 ## Introdução  
 Seja bem-vindo à minha oficina. É aqui onde faço testes e estudos com linguagens, frameworks e ferramentas de programação e crio protótipos para testar a viabilidade de alguma idea que tive.
