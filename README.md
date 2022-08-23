@@ -1,3 +1,4 @@
+![imagem de desenvolvedor](https://github.com/wesleymiranda/oficina/blob/master/software%20developer.jpg)
 #OFICINA
   
 ## Introdução  
