@@ -4,12 +4,12 @@
 
 using namespace std;
 
+int FPS = 35;
 
 float xmin = -80;
 float xmax = 80;
 float ymin = -60;
 float ymax = 60;
-float c = 5;
 int l, totalDatas = 100;
 const int DIMENSION = 2;
 vector<float> W;
@@ -75,7 +75,7 @@ float dotProduct(vector<float>& W, vector<float>& X)
 
 float f(float x)
 {
-	return c + x / 2;
+	return x / 2;
 }
 
 void drawFunc(float xmin, float xmax, float a, float b)
@@ -108,6 +108,8 @@ void esc(unsigned char tecla, int x, int y)
 	}
 }
 
+
+// Explicar melhor esta Funcao de Identificacao dos casos
 void list(Space& Vec)
 {
 
@@ -169,7 +171,7 @@ vector<float> perceptron()
 	random(W);
 	predict();
 
-	while (0 != misclassified_examples.size())
+	if (misclassified_examples.size())
 	{
 		int i = rand() % misclassified_examples.size();
 		int j = (misclassified_examples[i].b) ? 1 : -1;
@@ -190,7 +192,8 @@ void desenha()
 	glColor3f(0, 0, 0);
 	drawFunc(xmin, xmax, 0.5, 0); //Desenho da reta esperada em PRETO
 
-	//perceptron();
+
+	perceptron();
 
 	float a = -(W[0] / W[1]);
 	glColor3f(0, 1, 0);
@@ -202,11 +205,17 @@ void desenha()
 	glutSwapBuffers();
 }
 
+void idle(int x)
+{
+	glutPostRedisplay();
+	glutTimerFunc(1000 / FPS, idle, 0);
+}
+
 int main(int argc, char* argv[])
 {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
-	glutInitWindowSize(800, 600);
+	glutInitWindowSize(640, 480);
 	glutCreateWindow("Desenha Funcao");
 	glClearColor(1, 1, 1, 1);
 
@@ -218,6 +227,7 @@ int main(int argc, char* argv[])
 
 	glutDisplayFunc(desenha);
 	glutKeyboardFunc(esc);
+	glutTimerFunc(1000 / FPS, idle, 0);
 	glutMainLoop();
 
 	return 0;
